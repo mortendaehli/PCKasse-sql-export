@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+
+  db:
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile
+      args:
+        ACCEPT_EULA: Y
+        MSSQL_SA_PASSWORD: ${SQL_PASSWORD}
+    volumes:
+      - ./data/mssql:/var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SQL_PASSWORD}
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    expose:
+      - "1433"
+    # entrypoint: bash
+
+  app:
+    build:
+      context: .
+      dockerfile: ./pckasse_sql_export/Dockerfile
+      args:
+        INSTALL_DEV: ${INSTALL_DEV:-false}
+      target: dev
+    environment:
+      - SQL_PASSWORD=${SQL_PASSWORD}
+      - SQL_PORT=1433
