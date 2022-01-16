@@ -12,7 +12,7 @@ RUN pip install poetry && poetry config virtualenvs.create false
 
 WORKDIR /code
 
-COPY pyproject.toml poetry.lock ./
+COPY pckasse_sql_export/pyproject.toml pckasse_sql_export/poetry.lock ./
 
 RUN bash -c "if [ INSTALL_DEV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --no-dev ; fi"
 
